@@ -291,21 +291,15 @@ namespace EntityFrameworkCore.Jet.Migrations
                 model,
                 builder);
 
-            builder.AppendLine(Dependencies.SqlGenerationHelper.StatementTerminator);
-
             if (operation.DefaultValue != null
                 || operation.DefaultValueSql != null)
             {
-                builder
-                    .Append("ALTER TABLE ")
-                    .Append(Dependencies.SqlGenerationHelper.DelimitIdentifier(operation.Table, operation.Schema))
-                    .Append(" ADD");
+                
                 DefaultValue(operation.DefaultValue, operation.DefaultValueSql, builder);
-                builder
-                    .Append(" FOR ")
-                    .Append(Dependencies.SqlGenerationHelper.DelimitIdentifier(operation.Name))
-                    .AppendLine(Dependencies.SqlGenerationHelper.StatementTerminator);
             }
+
+            builder.AppendLine(Dependencies.SqlGenerationHelper.StatementTerminator);
+            
 
             if (narrowed)
             {
