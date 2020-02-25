@@ -70,6 +70,13 @@ namespace System.Data.Jet
                 foreach (ConnectionSet connectionSet in _pool)
                     connectionSet.Dispose();
                 _pool.Clear();
+
+                // We also need to release the OleDbConnection pooled connections, and then force garbage collection.
+                // See https://docs.microsoft.com/en-us/dotnet/api/system.data.oledb.oledbconnection.releaseobjectpool
+                // According to that documentation, there are potential issues with connections that haven't timed out of the pool.
+                OleDbConnection.ReleaseObjectPool();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 

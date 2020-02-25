@@ -184,10 +184,13 @@ namespace System.Data.Jet
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            _ConnectionString = string.Empty;
-
             if (disposing)
+            {
                 Close();
+                ClearAllPools();
+            }
+
+            _ConnectionString = string.Empty;
 
             base.Dispose(disposing);
         }
